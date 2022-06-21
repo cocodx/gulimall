@@ -7,6 +7,7 @@
 ##### gulimall-ware 仓储服务🏜️
 ##### gulimall-product 商品服务🌋
 ##### gulimall-common 公共依赖组件🏕️
+##### renren-generator CRUD代码生成器🗺️
 
 #### 技术搭配方案
 * Nacos：注册中心（服务发现/注册）
@@ -17,3 +18,27 @@
 * Gateway：API网关（webflux编程模式）
 * Sleuth：调用链监控
 * Seata：原Fescar：分布式事务解决方案
+
+##### renren-generator
+**具体使用**
+- 项目启动后，[访问地址http://localhost/](http://localhost/)，进入操作界面下载表的代码
+
+修改文件 generator.properties
+```js
+#主要包路径
+mainPath=com.lg
+#包名
+package=com.lg.gulimall
+#模块名字
+moduleName=product
+#作者
+author=liugang
+#Email
+email=2cevening@gmail.com
+#表前缀
+tablePrefix=pms_
+```
+修改文件 application.yml
+```aidl
+修改连接数据的url地址和root还有password
+```
