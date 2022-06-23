@@ -1,7 +1,7 @@
 package com.lg.gulimall.order;
 
-import com.lg.gulimall.order.entity.OmsOrderEntity;
-import com.lg.gulimall.order.service.OmsOrderService;
+import com.lg.gulimall.order.entity.OrderEntity;
+import com.lg.gulimall.order.service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ public class GulimallOrderApplicationTests {
 
 
     @Autowired
-    OmsOrderService omsOrderService;
+    OrderService omsOrderService;
 
     @Test
     public void contextLoads(){
-        OmsOrderEntity omsOrderEntity = new OmsOrderEntity();
+        OrderEntity omsOrderEntity = new OrderEntity();
         omsOrderEntity.setBillContent("老外不吃内脏？");
         omsOrderService.save(omsOrderEntity);
     }
