@@ -26,7 +26,7 @@
 修改文件 generator.properties
 ```js
 #主要包路径
-mainPath=com.lg
+mainPath=com.lg.gulimall
 #包名
 package=com.lg.gulimall
 #模块名字
