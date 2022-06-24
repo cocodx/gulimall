@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,13 @@ import com.lg.gulimall.common.utils.R;
 public class CouponController {
     @Autowired
     private CouponService couponService;
+
+    @RequestMapping("/member/list")
+    public R memberCoupons(){
+        CouponEntity coupon = new CouponEntity();
+        coupon.setCouponName("满100减10");
+        return R.ok().put("coupons",Arrays.asList(coupon));
+    }
 
     /**
      * 列表
