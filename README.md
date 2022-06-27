@@ -65,3 +65,13 @@ tablePrefix=pms_
 13. - [ ] redis集群🥗
 13. - [ ] es集群🥬
 13. - [ ] rabbitmq镜像集群🍺
+
+#### 解决跨域
+##### 使用nginx部署为同一域
+从头到尾都是nginx代理，同一域
+##### 配置当次请求允许跨域
+* Access-Control-Allow-Origin: 支持哪些来源的请求跨域
+* Access-Control-Allow-Methods: 支持哪些方法跨域
+* Access-Control-Allow-Credentials: 跨域请求默认不包含cookie，设置为true可以包含cookie
+* Access-Control-Expose-Headers: 跨域请求暴露的字段
+* Access-Control-Max-Age: 表明该响应的有效时间为多少秒
