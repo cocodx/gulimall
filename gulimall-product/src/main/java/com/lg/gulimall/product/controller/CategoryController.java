@@ -85,10 +85,11 @@ public class CategoryController {
 
     /**
      * 删除
+     * springmvc自动把请求体的数据json，转为对象的对象
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+		categoryService.removeMenuByIds(Arrays.asList(catIds));
 
         return R.ok();
     }
