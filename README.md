@@ -75,3 +75,12 @@ tablePrefix=pms_
 * Access-Control-Allow-Credentials: 跨域请求默认不包含cookie，设置为true可以包含cookie
 * Access-Control-Expose-Headers: 跨域请求暴露的字段
 * Access-Control-Max-Age: 表明该响应的有效时间为多少秒
+
+#### 集成skywalking
+##### 启动主函数，添加vm参数
+```xml
+-javaagent:D:/skywalking/skywalking-agent/skywalking-agent.jar
+-Dskywalking_config=D:/skywalking/skywalking-agent/config/agent.config
+-Dskywalking.collector.backend_service=192.168.125.101:11800
+-Dskywalking.agent.service_name=gulimall-gateway
+```
