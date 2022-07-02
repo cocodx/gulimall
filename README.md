@@ -84,3 +84,5 @@ tablePrefix=pms_
 -Dskywalking.collector.backend_service=192.168.125.101:11800
 -Dskywalking.agent.service_name=gulimall-gateway
 ```
+
+#### 集成minio

@@ -10,6 +10,12 @@ spring:
           uri: https://www.qq.com
           predicates:
             - Query=url,qq
+        - id: minio_route
+          uri: lb://gulimall-minio
+          predicates:
+            - Path=/api/minio/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         - id: product_route
           uri: lb://gulimall-product
           predicates:
