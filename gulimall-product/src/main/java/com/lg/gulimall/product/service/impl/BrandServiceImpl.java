@@ -11,6 +11,7 @@ import com.lg.gulimall.common.utils.Query;
 import com.lg.gulimall.product.dao.BrandDao;
 import com.lg.gulimall.product.entity.BrandEntity;
 import com.lg.gulimall.product.service.BrandService;
+import org.springframework.util.StringUtils;
 
 
 @Service("brandService")
@@ -18,10 +19,11 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<BrandEntity> page = this.page(
-                new Query<BrandEntity>().getPage(params),
-                new QueryWrapper<BrandEntity>()
-        );
+        QueryWrapper<BrandEntity> brandEntityQueryWrapper = new QueryWrapper<>();
+        if(!StringUtils.isEmpty(params.get("key"))){
+            brandEntityQueryWrapper.like("name",params.get("key"));
+        }
+        IPage<BrandEntity> page = this.page(new Query<BrandEntity>().getPage(params), brandEntityQueryWrapper);
 
         return new PageUtils(page);
     }

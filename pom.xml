@@ -17,6 +17,7 @@
         <module>renren-generator</module>
         <module>gulimall-common</module>
         <module>gulimall-gateway</module>
+        <module>gulimall-minio</module>
     </modules>
     <packaging>pom</packaging>
 

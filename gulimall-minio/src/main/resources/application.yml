@@ -1,0 +1,5 @@
+server:
+  port: 6363
+spring:
+  application:
+    name: gulimall-minio

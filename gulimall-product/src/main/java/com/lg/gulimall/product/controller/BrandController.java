@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,12 +63,24 @@ public class BrandController {
         return R.ok();
     }
 
+    @RequestMapping("/update/status")
+    public R updateStatus(@RequestBody BrandEntity brand){
+        UpdateWrapper<BrandEntity> brandWrapper = new UpdateWrapper<>();
+        brandWrapper.set("brand_id",brand.getBrandId());
+        brandWrapper.set("show_status",brand.getShowStatus());
+        brandService.update(brandWrapper);
+        return R.ok();
+    }
+
     /**
      * 修改
      */
     @RequestMapping("/update")
     public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("brand_id",brand.getBrandId());
+        updateWrapper.set("show_status",brand.getShowStatus());
+		brandService.update(null,updateWrapper);
 
         return R.ok();
     }
