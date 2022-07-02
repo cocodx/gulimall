@@ -86,3 +86,11 @@ tablePrefix=pms_
 ```
 
 #### 集成minio
+##### 进入minio目录，打开cmd输入一下命令
+```shell
+minio.exe server /data
+```
+<http://localhost:9000>
+
+登录名称：minioadmin  
+登录密码：minioadmin  
