@@ -65,10 +65,10 @@ public class BrandController {
 
     @RequestMapping("/update/status")
     public R updateStatus(@RequestBody BrandEntity brand){
-        UpdateWrapper<BrandEntity> brandWrapper = new UpdateWrapper<>();
-        brandWrapper.set("brand_id",brand.getBrandId());
-        brandWrapper.set("show_status",brand.getShowStatus());
-        brandService.update(brandWrapper);
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("brand_id",brand.getBrandId());
+        updateWrapper.set("show_status",brand.getShowStatus());
+        brandService.update(updateWrapper);
         return R.ok();
     }
 
@@ -77,10 +77,8 @@ public class BrandController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody BrandEntity brand){
-        UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("brand_id",brand.getBrandId());
-        updateWrapper.set("show_status",brand.getShowStatus());
-		brandService.update(null,updateWrapper);
+
+		brandService.updateById(brand);
 
         return R.ok();
     }
