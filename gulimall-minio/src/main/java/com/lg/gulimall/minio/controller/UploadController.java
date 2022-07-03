@@ -98,7 +98,7 @@ public class UploadController {
         return "上传成功";
     }
 
-    //getPresignedObjectUrl 生成预览地址
+
 
     public static void main(String[] args)throws Exception {
         MinioClient minioClient = MinioClient.builder()

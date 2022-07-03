@@ -3,15 +3,14 @@ package com.lg.gulimall.minio.controller;
 import com.alibaba.fastjson.JSON;
 import io.minio.*;
 import io.minio.errors.*;
+import io.minio.http.Method;
 import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,6 +21,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author amazfit
@@ -61,6 +61,24 @@ public class DownLoadController {
                 }
             }
         }
+    }
+
+    /**
+     * 生成预览地址
+     * @param fileName
+     * @return
+     */
+    @GetMapping("/getPreviewFileUrl")
+    public String getPreviewFileUrl(@RequestParam String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        String url = minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .bucket(bucketName)
+                        .object(fileName)
+                        .expiry(1, TimeUnit.DAYS)
+                        .method(Method.GET)
+                        .build()
+        );
+        return url;
     }
 
 
