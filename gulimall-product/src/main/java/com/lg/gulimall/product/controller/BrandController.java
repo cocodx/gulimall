@@ -5,7 +5,11 @@ import java.util.Map;
 
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.lg.gulimall.common.valid.AddGroup;
+import com.lg.gulimall.common.valid.UpdateGroup;
+import com.lg.gulimall.common.valid.UpdateGroupStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,14 +61,14 @@ public class BrandController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody BrandEntity brand){
+    public R save(@Validated({AddGroup.class}) @RequestBody BrandEntity brand){
 		brandService.save(brand);
 
         return R.ok();
     }
 
     @RequestMapping("/update/status")
-    public R updateStatus(@RequestBody BrandEntity brand){
+    public R updateStatus(@Validated(UpdateGroupStatus.class) @RequestBody BrandEntity brand){
         UpdateWrapper updateWrapper = new UpdateWrapper();
         updateWrapper.eq("brand_id",brand.getBrandId());
         updateWrapper.set("show_status",brand.getShowStatus());
@@ -76,10 +80,8 @@ public class BrandController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody BrandEntity brand){
-
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
 		brandService.updateById(brand);
-
         return R.ok();
     }
 
