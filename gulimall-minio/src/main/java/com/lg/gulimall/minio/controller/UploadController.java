@@ -82,7 +82,7 @@ public class UploadController {
             try{
                 InputStream inputStream = file.getInputStream();
                 minioClient.putObject(
-                        PutObjectArgs.builder().bucket(bucketName).object(originalFileName)
+                        PutObjectArgs.builder().bucket(bucketName).object("/image/"+originalFileName)
                                 .stream(
                                         inputStream,file.getSize(),-1
                                 )
