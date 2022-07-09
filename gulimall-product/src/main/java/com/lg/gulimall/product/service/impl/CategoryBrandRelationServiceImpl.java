@@ -46,7 +46,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         BrandEntity brandEntity = brandDao.selectById(brandId);
         CategoryEntity categoryEntity = categoryDao.selectById(catelogId);
         categoryBrandRelation.setBrandName(brandEntity.getName());
-        categoryBrandRelation.setCatelogName(categoryBrandRelation.getCatelogName());
+        categoryBrandRelation.setCatelogName(categoryEntity.getName());
         this.save(categoryBrandRelation);
     }
 
