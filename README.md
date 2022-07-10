@@ -149,3 +149,52 @@ CREATE TABLE `pms_category`  (
 
 SET FOREIGN_KEY_CHECKS = 1;
 ```
+
+##### pms_attr_group
+pms_attr_group 对应京东商品三级分类的 属性分组SPU、SKU（我还不太懂）
+![image](https://github.com/cocodx/Java-doc/blob/master/images/)
+```sql
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for pms_attr_group
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_attr_group`;
+CREATE TABLE `pms_attr_group`  (
+  `attr_group_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分组id',
+  `attr_group_name` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组名',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `descript` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组图标',
+  `catelog_id` bigint(20) NULL DEFAULT NULL COMMENT '所属分类id',
+  PRIMARY KEY (`attr_group_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性分组' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+```
+
+##### pms_category_brand_relation
+pms_category_brand_relation 对应京东三级分类 - 关联 - 品牌
+![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_18-34-13.png)
+![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_18-40-08.png)
+##### 
+```sql
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for pms_category_brand_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_category_brand_relation`;
+CREATE TABLE `pms_category_brand_relation`  (
+`id` bigint(20) NOT NULL AUTO_INCREMENT,
+`brand_id` bigint(20) NULL DEFAULT NULL COMMENT '品牌id',
+`catelog_id` bigint(20) NULL DEFAULT NULL COMMENT '分类id',
+`brand_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+`catelog_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+```
