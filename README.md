@@ -95,3 +95,30 @@ minio.exe server /data
 
 登录名称：minioadmin  
 登录密码：minioadmin  
+
+#### product表结构分析
+
+##### pms_brand
+pms_brand 对应电商系统品牌 例如下图
+![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_17-53-09.png)
+```sql
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for pms_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_brand`;
+CREATE TABLE `pms_brand`  (
+  `brand_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '品牌id',
+  `name` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '品牌名',
+  `logo` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '品牌logo地址http链接',
+  `descript` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '品牌介绍',
+  `show_status` tinyint(4) NULL DEFAULT NULL COMMENT '显示状态[0-不显示；1-显示]',
+  `first_letter` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '检索首字母',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`brand_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+```
