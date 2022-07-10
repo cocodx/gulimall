@@ -175,6 +175,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 ```
 
 ##### pms_category_brand_relation
+
+比如说，小米品牌既造手机，就有手机的分类，又造汽车，又有汽车的分类，又造电视，就有电视的分类，多对多的。
+一个分类，肯定有很多个品牌。
+
 pms_category_brand_relation 对应京东三级分类 - 关联 - 品牌
 ![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_18-34-13.png)
 ![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_18-40-08.png)
@@ -224,3 +228,5 @@ CREATE TABLE `pms_attr_group`  (
 
 SET FOREIGN_KEY_CHECKS = 1;
 ```
+
+##### 

@@ -61,7 +61,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         //2、保存关联关系
         AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
         attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
-        attrAttrgroupRelationEntity.setAttrId(attr.getAttrId());
+        attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
         attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
     }
 
