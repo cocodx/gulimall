@@ -205,28 +205,30 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 #### 
 
-##### pms_attr_group
-pms_attr_group 对应具体商品的主题规格参数的主体信息 - 商品分类 - 商品
-![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_20-03-18.png)
+##### pms_attr
+pms_attr 对应具体商品的主题规格参数的主体信息里面的具体信息 
+![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_22-44-30.png)
 ```sql
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for pms_attr_group
+-- Table structure for pms_attr
 -- ----------------------------
-DROP TABLE IF EXISTS `pms_attr_group`;
-CREATE TABLE `pms_attr_group`  (
-  `attr_group_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分组id',
-  `attr_group_name` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组名',
-  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
-  `descript` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
-  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组图标',
-  `catelog_id` bigint(20) NULL DEFAULT NULL COMMENT '所属分类id',
-  PRIMARY KEY (`attr_group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性分组' ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `pms_attr`;
+CREATE TABLE `pms_attr`  (
+ `attr_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '属性id',
+ `attr_name` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '属性名',
+ `search_type` tinyint(4) NULL DEFAULT NULL COMMENT '是否需要检索[0-不需要，1-需要]',
+ `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '属性图标',
+ `value_select` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '可选值列表[用逗号分隔]',
+ `attr_type` tinyint(4) NULL DEFAULT NULL COMMENT '属性类型[0-销售属性，1-基本属性，2-既是销售属性又是基本属性]',
+ `enable` bigint(20) NULL DEFAULT NULL COMMENT '启用状态[0 - 禁用，1 - 启用]',
+ `catelog_id` bigint(20) NULL DEFAULT NULL COMMENT '所属分类',
+ `show_desc` tinyint(4) NULL DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整',
+ `value_type` tinyint(4) NULL DEFAULT NULL COMMENT '值类型 [0-只能单个值，1-允许多个值]',
+ PRIMARY KEY (`attr_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
 ```
-
-##### 

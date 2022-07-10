@@ -23,6 +23,12 @@ public class AttrVo {
      * 属性图标
      */
     private String icon;
+
+    /**
+     * 值类型 [0-只能单个值，1-允许多个值]
+     */
+    private Integer valueType;
+
     /**
      * 可选值列表[用逗号分隔]
      */
