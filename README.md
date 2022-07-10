@@ -122,3 +122,30 @@ CREATE TABLE `pms_brand`  (
 
 SET FOREIGN_KEY_CHECKS = 1;
 ```
+
+##### pms_category
+pms_category 对应京东的首页三级分类 例如下图
+![image](https://github.com/cocodx/Java-doc/blob/master/images/Snipaste_2022-07-10_18-15-24.png)
+```sql
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for pms_category
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_category`;
+CREATE TABLE `pms_category`  (
+                                 `cat_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类id',
+                                 `name` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类名称',
+                                 `parent_cid` bigint(20) NULL DEFAULT NULL COMMENT '父分类id',
+                                 `cat_level` int(11) NULL DEFAULT NULL COMMENT '层级',
+                                 `show_status` tinyint(4) NULL DEFAULT NULL COMMENT '是否显示[0-不显示，1显示]',
+                                 `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+                                 `icon` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图标地址',
+                                 `product_unit` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '计量单位',
+                                 `product_count` int(11) NULL DEFAULT NULL COMMENT '商品数量',
+                                 PRIMARY KEY (`cat_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1436 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品三级分类' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+```
