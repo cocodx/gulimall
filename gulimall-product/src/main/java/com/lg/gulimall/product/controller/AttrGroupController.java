@@ -1,16 +1,16 @@
 package com.lg.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
+import com.lg.gulimall.product.entity.AttrEntity;
+import com.lg.gulimall.product.service.AttrService;
 import com.lg.gulimall.product.service.CategoryService;
+import com.lg.gulimall.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.lg.gulimall.product.entity.AttrGroupEntity;
 import com.lg.gulimall.product.service.AttrGroupService;
@@ -34,6 +34,16 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
+
+    ///product/attrgroup/1/attr/relation?t=1657557929303
+    @GetMapping("/{attrGroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrGroupId")Long attrGroupId){
+        List<AttrEntity> attrEntityList = attrService.getRelationAttr(attrGroupId);
+        return R.ok().put("data",attrEntityList);
+    }
 
     /**
      * 列表
@@ -74,7 +84,6 @@ public class AttrGroupController {
     @RequestMapping("/update")
     public R update(@RequestBody AttrGroupEntity attrGroup){
 		attrGroupService.updateById(attrGroup);
-
         return R.ok();
     }
 
@@ -84,7 +93,12 @@ public class AttrGroupController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] attrGroupIds){
 		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
+        return R.ok();
+    }
 
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] attrGroupRelationVo){
+        attrService.deleteRelation(attrGroupRelationVo);
         return R.ok();
     }
 

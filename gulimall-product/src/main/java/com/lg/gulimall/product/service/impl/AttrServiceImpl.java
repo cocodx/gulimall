@@ -9,6 +9,7 @@ import com.lg.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.lg.gulimall.product.entity.AttrGroupEntity;
 import com.lg.gulimall.product.entity.CategoryEntity;
 import com.lg.gulimall.product.service.CategoryService;
+import com.lg.gulimall.product.vo.AttrGroupRelationVo;
 import com.lg.gulimall.product.vo.AttrRespVo;
 import com.lg.gulimall.product.vo.AttrVo;
 import org.checkerframework.checker.units.qual.A;
@@ -16,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -164,6 +167,27 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
         }
 
+    }
+
+    @Override
+    public List<AttrEntity> getRelationAttr(Long attrGroupId) {
+        List<AttrAttrgroupRelationEntity> entities = attrAttrgroupRelationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id",attrGroupId));
+        List<Long> attrIds = entities.stream().map((attr)->{
+             return attr.getAttrId();
+        }).collect(Collectors.toList());
+        Collection<AttrEntity> attrEntities = this.listByIds(attrIds);
+        return (List<AttrEntity>) attrEntities;
+    }
+
+    @Override
+    public void deleteRelation(AttrGroupRelationVo[] attrGroupRelationVo) {
+        //attrAttrgroupRelationDao.delete(new QueryWrapper<>().eq("attr_id",1L).eq("attr_group_id",1L))
+        List<AttrAttrgroupRelationEntity> relationEntityList = Arrays.asList(attrGroupRelationVo).stream().map((item)->{
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            BeanUtils.copyProperties(item,attrAttrgroupRelationEntity);
+            return attrAttrgroupRelationEntity;
+        }).collect(Collectors.toList());
+        attrAttrgroupRelationDao.deleteBatchRelation(relationEntityList);
     }
 
 }

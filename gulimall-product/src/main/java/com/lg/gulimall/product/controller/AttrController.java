@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 
+import com.lg.gulimall.product.vo.AttrGroupRelationVo;
 import com.lg.gulimall.product.vo.AttrRespVo;
 import com.lg.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,7 @@ public class AttrController {
 		attrService.updateAttr(attr);
         return R.ok();
     }
+
 
     /**
      * 删除
