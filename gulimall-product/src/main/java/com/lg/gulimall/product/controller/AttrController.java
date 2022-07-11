@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.Map;
 
 
-import com.lg.gulimall.product.vo.AttrGroupRelationVo;
 import com.lg.gulimall.product.vo.AttrRespVo;
 import com.lg.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.lg.gulimall.product.entity.AttrEntity;
 import com.lg.gulimall.product.service.AttrService;
 import com.lg.gulimall.common.utils.PageUtils;
 import com.lg.gulimall.common.utils.R;

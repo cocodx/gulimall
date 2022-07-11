@@ -1,22 +1,19 @@
 package com.lg.gulimall.product.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-
+import com.lg.gulimall.common.utils.PageUtils;
+import com.lg.gulimall.common.utils.R;
 import com.lg.gulimall.product.entity.AttrEntity;
+import com.lg.gulimall.product.entity.AttrGroupEntity;
+import com.lg.gulimall.product.service.AttrGroupService;
 import com.lg.gulimall.product.service.AttrService;
 import com.lg.gulimall.product.service.CategoryService;
 import com.lg.gulimall.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.lg.gulimall.product.entity.AttrGroupEntity;
-import com.lg.gulimall.product.service.AttrGroupService;
-import com.lg.gulimall.common.utils.PageUtils;
-import com.lg.gulimall.common.utils.R;
-
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -38,11 +35,23 @@ public class AttrGroupController {
     @Autowired
     private AttrService attrService;
 
+    /**
+     * 查询分组没有关联的属性
+     *
+     * @param attrGroupId
+     * @return
+     */
+    @GetMapping("/{attrGroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrGroupId") Long attrGroupId, @RequestParam Map<String, Object> params) {
+        PageUtils pageUtils = attrService.getNoRelationAttr(params, attrGroupId);
+        return R.ok().put("page", pageUtils);
+    }
+
     ///product/attrgroup/1/attr/relation?t=1657557929303
     @GetMapping("/{attrGroupId}/attr/relation")
-    public R attrRelation(@PathVariable("attrGroupId")Long attrGroupId){
+    public R attrRelation(@PathVariable("attrGroupId") Long attrGroupId) {
         List<AttrEntity> attrEntityList = attrService.getRelationAttr(attrGroupId);
-        return R.ok().put("data",attrEntityList);
+        return R.ok().put("data", attrEntityList);
     }
 
     /**
@@ -50,8 +59,8 @@ public class AttrGroupController {
      * 带上三级分类id
      */
     @RequestMapping("/list/{catelogId}")
-    public R list(@RequestParam Map<String, Object> params,@PathVariable("catelogId") Long catelogId){
-        PageUtils page = attrGroupService.queryPage(params,catelogId);
+    public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId) {
+        PageUtils page = attrGroupService.queryPage(params, catelogId);
         return R.ok().put("page", page);
     }
 
@@ -60,8 +69,8 @@ public class AttrGroupController {
      * 信息
      */
     @RequestMapping("/info/{attrGroupId}")
-    public R info(@PathVariable("attrGroupId") Long attrGroupId){
-		AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
+    public R info(@PathVariable("attrGroupId") Long attrGroupId) {
+        AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
         long catelogId = attrGroup.getCatelogId();
         Long[] path = categoryService.findCategoryPath(catelogId);
         attrGroup.setCatelogPath(path);
@@ -72,8 +81,8 @@ public class AttrGroupController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrGroupEntity attrGroup){
-		attrGroupService.save(attrGroup);
+    public R save(@RequestBody AttrGroupEntity attrGroup) {
+        attrGroupService.save(attrGroup);
 
         return R.ok();
     }
@@ -82,8 +91,8 @@ public class AttrGroupController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrGroupEntity attrGroup){
-		attrGroupService.updateById(attrGroup);
+    public R update(@RequestBody AttrGroupEntity attrGroup) {
+        attrGroupService.updateById(attrGroup);
         return R.ok();
     }
 
@@ -91,13 +100,13 @@ public class AttrGroupController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrGroupIds){
-		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
+    public R delete(@RequestBody Long[] attrGroupIds) {
+        attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
         return R.ok();
     }
 
     @PostMapping("/attr/relation/delete")
-    public R deleteRelation(@RequestBody AttrGroupRelationVo[] attrGroupRelationVo){
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] attrGroupRelationVo) {
         attrService.deleteRelation(attrGroupRelationVo);
         return R.ok();
     }

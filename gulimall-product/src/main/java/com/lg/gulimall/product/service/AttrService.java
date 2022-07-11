@@ -23,7 +23,7 @@ public interface AttrService extends IService<AttrEntity> {
 
     void saveAttr(AttrVo attr);
 
-    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId,String type);
+    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId, String type);
 
     AttrRespVo getAttrInfo(Long attrId);
 
@@ -31,11 +31,21 @@ public interface AttrService extends IService<AttrEntity> {
 
     /**
      * 根据分组id，查找关联的所有属性，基本属性
+     *
      * @param attrGroupId
      * @return
      */
     List<AttrEntity> getRelationAttr(Long attrGroupId);
 
     void deleteRelation(AttrGroupRelationVo[] attrGroupRelationVo);
+
+    /**
+     * 获取当前分组没有关联的所有属性
+     *
+     * @param params
+     * @param attrGroupId
+     * @return
+     */
+    PageUtils getNoRelationAttr(Map<String, Object> params, Long attrGroupId);
 }
 
