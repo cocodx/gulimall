@@ -4,6 +4,7 @@ import com.lg.gulimall.common.utils.PageUtils;
 import com.lg.gulimall.common.utils.R;
 import com.lg.gulimall.product.entity.AttrEntity;
 import com.lg.gulimall.product.entity.AttrGroupEntity;
+import com.lg.gulimall.product.service.AttrAttrgroupRelationService;
 import com.lg.gulimall.product.service.AttrGroupService;
 import com.lg.gulimall.product.service.AttrService;
 import com.lg.gulimall.product.service.CategoryService;
@@ -34,6 +35,15 @@ public class AttrGroupController {
 
     @Autowired
     private AttrService attrService;
+
+    @Autowired
+    private AttrAttrgroupRelationService relationService;
+
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> vos) {
+        relationService.saveBatch(vos);
+        return R.ok();
+    }
 
     /**
      * 查询分组没有关联的属性
