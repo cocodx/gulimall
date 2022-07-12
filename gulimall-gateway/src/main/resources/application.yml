@@ -16,6 +16,14 @@
 #            - Path=/api/minio/**
 #          filters:
 #            - RewritePath=/api/(?<segment>.*),/$\{segment}
+#
+#        - id: member_route
+#          uri: lb://gulimall-member
+#          predicates:
+#            - Path=/api/member/**
+#          filters:
+#            - RewritePath=/api/(?<segment>.*),/$\{segment}
+#
 #        - id: product_route
 #          uri: lb://gulimall-product
 #          predicates:
