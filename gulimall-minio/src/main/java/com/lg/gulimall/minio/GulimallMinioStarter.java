@@ -2,17 +2,18 @@ package com.lg.gulimall.minio;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author amazfit
  * @date 2022-07-02 下午5:06
  **/
-@SpringBootApplication
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
-public class   GulimallMinioStarter {
+public class GulimallMinioStarter {
 
     public static void main(String[] args) {
-        SpringApplication.run(GulimallMinioStarter.class,args);
+        SpringApplication.run(GulimallMinioStarter.class, args);
     }
 }

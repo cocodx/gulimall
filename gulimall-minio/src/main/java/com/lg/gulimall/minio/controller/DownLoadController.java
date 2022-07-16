@@ -96,4 +96,14 @@ public class DownLoadController {
         );
         return R.ok().put("url", url);
     }
+
+    @GetMapping("/getPreviewFileUrlNew")
+    public R getPreviewFileUrlNew(@RequestParam String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        StringBuffer s = new StringBuffer();
+        s.append("http://localhost:9000/");
+        s.append(bucketName);
+        s.append("/image/");
+        s.append(fileName);
+        return R.ok().put("url", s.toString());
+    }
 }
