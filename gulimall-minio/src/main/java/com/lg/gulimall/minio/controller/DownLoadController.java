@@ -1,10 +1,9 @@
 package com.lg.gulimall.minio.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.lg.gulimall.common.utils.R;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
-import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import org.apache.commons.io.IOUtils;
@@ -18,12 +17,11 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 下载
+ *
  * @author amazfit
  * @date 2022-07-02 下午5:25
  **/
@@ -38,54 +36,10 @@ public class DownLoadController {
     @Value("${minio.bucketName}")
     private String bucketName;
 
-    @RequestMapping("/download/{fileName}")
-    public void download(HttpServletResponse response, @PathVariable("fileName") String fileName) throws Exception {
-        InputStream inputStream = null;
-        try{
-            StatObjectResponse stat = minioClient.statObject(
-                    StatObjectArgs.builder().bucket(bucketName).object(fileName).build()
-            );
-            response.setContentType(stat.contentType());
-            response.setHeader("Content-Disposition","attachment;filename="+ URLEncoder.encode(fileName,"UTF-8"));
-            //文件下载
-            inputStream = minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(fileName).build());
-            IOUtils.copy(inputStream, response.getOutputStream());
-        }catch (Exception e){
-            log.error(e.getMessage());
-        }finally {
-            if (inputStream != null) {
-                try{
-                    inputStream.close();
-                }catch (IOException e){
-                    log.error(e.getMessage());
-                }
-            }
-        }
-    }
-
-    /**
-     * 生成预览地址
-     * @param fileName
-     * @return
-     */
-    @GetMapping("/getPreviewFileUrl")
-    public String getPreviewFileUrl(@RequestParam String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        String url = minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .bucket(bucketName)
-                        .object(fileName)
-                        .expiry(1, TimeUnit.DAYS)
-                        .method(Method.GET)
-                        .build()
-        );
-        return url;
-    }
-
-
     public static void main(String[] args) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         MinioClient minioClient = MinioClient.builder()
                 .endpoint(HttpUrl.parse("http://localhost:9000"))
-                .credentials("minioadmin","minioadmin")
+                .credentials("minioadmin", "minioadmin")
                 .build();
 
         String bucketName = "gulimall";
@@ -97,5 +51,49 @@ public class DownLoadController {
                         .filename("C:\\Users\\amazfit\\Pictures\\uToolsWallpapers\\11111.jpg")
                         .build()
         );
+    }
+
+    @RequestMapping("/download/{fileName}")
+    public void download(HttpServletResponse response, @PathVariable("fileName") String fileName) throws Exception {
+        InputStream inputStream = null;
+        try {
+            StatObjectResponse stat = minioClient.statObject(
+                    StatObjectArgs.builder().bucket(bucketName).object(fileName).build()
+            );
+            response.setContentType(stat.contentType());
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            //文件下载
+            inputStream = minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(fileName).build());
+            IOUtils.copy(inputStream, response.getOutputStream());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * 生成预览地址
+     *
+     * @param fileName
+     * @return
+     */
+    @GetMapping("/getPreviewFileUrl")
+    public R getPreviewFileUrl(@RequestParam String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        String url = minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .bucket(bucketName)
+                        .object(fileName)
+                        .expiry(1, TimeUnit.DAYS)
+                        .method(Method.GET)
+                        .build()
+        );
+        return R.ok().put("url", url);
     }
 }

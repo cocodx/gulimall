@@ -1,6 +1,7 @@
 package com.lg.gulimall.minio.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.lg.gulimall.common.utils.R;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
@@ -20,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 上传接口
+ *
  * @author amazfit
  * @date 2022-07-02 下午5:13
  **/
@@ -34,8 +37,27 @@ public class UploadController {
     @Value("${minio.bucketName}")
     private String bucketName;
 
+    public static void main(String[] args) throws Exception {
+        MinioClient minioClient = MinioClient.builder()
+                .endpoint(HttpUrl.parse("http://localhost:9000"))
+                .credentials("minioadmin", "minioadmin")
+                .build();
+
+        String bucketName = "gulimall";
+        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        if (!found) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+        }
+
+        minioClient.uploadObject(UploadObjectArgs.builder()
+                .bucket(bucketName)
+                .object("fox.jpg")
+                .filename("C:\\Users\\amazfit\\Pictures\\uToolsWallpapers\\wallhaven-wyl956.jpg").build());
+    }
+
     /**
      * 获取 bucket 下面的文件列表
+     *
      * @return
      */
     @RequestMapping("/list")
@@ -44,77 +66,57 @@ public class UploadController {
         Iterator<Result<Item>> iterator = results.iterator();
         List<Object> items = new ArrayList<>();
         String format = "{'fileName':'%s','fileSize':'%s'}";
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Item item = iterator.next().get();
-            items.add(JSON.parse(String.format(format,item.objectName(),item.size())));
+            items.add(JSON.parse(String.format(format, item.objectName(), item.size())));
         }
-
         return items;
     }
 
     /**
      * 删除文件
+     *
      * @param fileName
      * @return
      */
     @DeleteMapping("/delete/{fileName}")
-    public Object delete(@PathVariable("fileName")String fileName){
-        try{
+    public R delete(@PathVariable("fileName") String fileName) {
+        try {
             minioClient.removeObject(
                     RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
-            return "删除失败";
+            return R.error("删除失败");
         }
-        return "删除成功";
+        return R.ok("删除成功");
     }
 
     @PostMapping("/upload")
-    public Object upload(@RequestParam(name="file",required = false)MultipartFile[] files){
-        if (files == null || files.length==0){
-            return "上传文件不能为null";
+    public R upload(@RequestParam(name = "file", required = false) MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return R.error("上传文件不能为null");
         }
         List<String> originalFileNameList = new ArrayList<>(files.length);
-        for (MultipartFile file : files){
+        for (MultipartFile file : files) {
             String originalFileName = file.getOriginalFilename();
             originalFileNameList.add(originalFileName);
-            try{
+            try {
                 InputStream inputStream = file.getInputStream();
                 minioClient.putObject(
-                        PutObjectArgs.builder().bucket(bucketName).object("/image/"+originalFileName)
+                        PutObjectArgs.builder().bucket(bucketName).object("/image/" + originalFileName)
                                 .stream(
-                                        inputStream,file.getSize(),-1
+                                        inputStream, file.getSize(), -1
                                 )
                                 .contentType(file.getContentType())
                                 .build()
                 );
                 inputStream.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error(e.getMessage());
-                return "上传失败";
+                return R.error("上传失败");
             }
         }
-        return "上传成功";
-    }
-
-
-
-    public static void main(String[] args)throws Exception {
-        MinioClient minioClient = MinioClient.builder()
-                .endpoint(HttpUrl.parse("http://localhost:9000"))
-                .credentials("minioadmin","minioadmin")
-                .build();
-
-        String bucketName = "gulimall";
-        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-        if (!found){
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-        }
-
-        minioClient.uploadObject(UploadObjectArgs.builder()
-                .bucket(bucketName)
-                .object("fox.jpg")
-                .filename("C:\\Users\\amazfit\\Pictures\\uToolsWallpapers\\wallhaven-wyl956.jpg").build());
+        return R.ok("上传成功");
     }
 }
