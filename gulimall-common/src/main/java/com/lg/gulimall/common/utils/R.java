@@ -9,22 +9,22 @@ import java.util.Map;
  * @author amazfit
  * @date 2022-06-23 下午9:12
  **/
-public class R extends HashMap<String,Object> {
+public class R extends HashMap<String, Object> {
 
     public R() {
-        put("code",0);
-        put("msg","success");
+        put("code", 0);
+        put("msg", "success");
     }
 
-    public static R error(){
-        return error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"未知异常，请联系管理员");
+    public static R error() {
+        return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "未知异常，请联系管理员");
     }
 
-    public static R error(String msg){
-        return error(HttpStatus.SC_INTERNAL_SERVER_ERROR,msg);
+    public static R error(String msg) {
+        return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
     }
 
-    public static R error(int code,String msg){
+    public static R error(int code, String msg) {
         R r = new R();
         r.put("code", code);
         r.put("msg", msg);
@@ -51,8 +51,8 @@ public class R extends HashMap<String,Object> {
         super.put(key, value);
         return this;
     }
-    public  Integer getCode() {
 
+    public Integer getCode() {
         return (Integer) this.get("code");
     }
 }
