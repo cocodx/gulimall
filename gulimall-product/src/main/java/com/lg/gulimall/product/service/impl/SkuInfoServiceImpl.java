@@ -1,16 +1,16 @@
 package com.lg.gulimall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lg.gulimall.common.utils.PageUtils;
 import com.lg.gulimall.common.utils.Query;
-
 import com.lg.gulimall.product.dao.SkuInfoDao;
 import com.lg.gulimall.product.entity.SkuInfoEntity;
 import com.lg.gulimall.product.service.SkuInfoService;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 
 @Service("skuInfoService")
@@ -24,6 +24,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void saveSkuInfo(SkuInfoEntity skuInfo) {
+        this.baseMapper.insert(skuInfo);
     }
 
 }

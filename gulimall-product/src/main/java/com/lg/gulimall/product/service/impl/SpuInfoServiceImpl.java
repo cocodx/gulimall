@@ -6,17 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lg.gulimall.common.utils.PageUtils;
 import com.lg.gulimall.common.utils.Query;
 import com.lg.gulimall.product.dao.SpuInfoDao;
-import com.lg.gulimall.product.entity.AttrEntity;
-import com.lg.gulimall.product.entity.ProductAttrValueEntity;
-import com.lg.gulimall.product.entity.SpuInfoDescEntity;
-import com.lg.gulimall.product.entity.SpuInfoEntity;
+import com.lg.gulimall.product.entity.*;
 import com.lg.gulimall.product.service.*;
-import com.lg.gulimall.product.vo.BaseAttrs;
-import com.lg.gulimall.product.vo.SpuSaveVo;
+import com.lg.gulimall.product.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -38,6 +35,15 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Autowired
     private ProductAttrValueService productAttrValueService;
+
+    @Autowired
+    private SkuInfoService skuInfoService;
+
+    @Autowired
+    private SkuImagesService skuImagesService;
+
+    @Autowired
+    private SkuSaleAttrValueService skuSaleAttrValueService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -87,11 +93,53 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         productAttrValueService.saveProductAttr(collect);
 
         //5、保存spu的积分信息：gulimall_sms-> sms_spu_bounds
+        List<Skus> skus = spuSaveVo.getSkus();
+        if (CollectionUtils.isEmpty(skus)) {
+            skus.forEach(item -> {
+                String defaultImg = "";
+                for (Images image : item.getImages()) {
+                    if (image.getDefaultImg() == 1) {
+                        defaultImg = image.getImgUrl();
+                    }
+                }
+                SkuInfoEntity skuInfo = new SkuInfoEntity();
+                BeanUtils.copyProperties(item, skuInfo);
+                skuInfo.setBrandId(spuInfoEntity.getBrandId());
+                skuInfo.setCatalogId(spuInfoEntity.getCatalogId());
+                skuInfo.setSaleCount(0L);
+                skuInfo.setSpuId(spuInfoEntity.getId());
+                skuInfo.setSkuDefaultImg(defaultImg);
+                //5.1)sku的基本信息：pms_sku_info
+                skuInfoService.saveSkuInfo(skuInfo);
 
-        //5.1)sku的基本信息：pms_sku_info
-        //5.1)sku的图片信息：pms_sku_images
-        //5.1)sku的销售属性信息：pms_sku_sale_attr_value
-        //5.1)sku的优惠，满减等信息：pms_sku_info
+                Long skuId = skuInfo.getSkuId();
+
+                List<SkuImagesEntity> imagesEntities = item.getImages().stream().map(img -> {
+                    SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
+                    skuImagesEntity.setSkuId(skuId);
+                    skuImagesEntity.setImgUrl(img.getImgUrl());
+                    skuImagesEntity.setDefaultImg(img.getDefaultImg());
+                    return skuImagesEntity;
+                }).collect(Collectors.toList());
+                //5.1)sku的图片信息：pms_sku_images
+                skuImagesService.saveBatch(imagesEntities);
+
+                //5.1)sku的销售属性信息：pms_sku_sale_attr_value
+                List<Attr> attrs = item.getAttr();
+                List<SkuSaleAttrValueEntity> skuSaleAttrValueEntities = attrs.stream().map(attr -> {
+                    SkuSaleAttrValueEntity skuSaleAttrValueEntity = new SkuSaleAttrValueEntity();
+                    BeanUtils.copyProperties(attr, skuSaleAttrValueEntity);
+                    skuSaleAttrValueEntity.setSkuId(skuId);
+                    return skuSaleAttrValueEntity;
+                }).collect(Collectors.toList());
+                skuSaleAttrValueService.saveBatch(skuSaleAttrValueEntities);
+
+                //todo
+                //5.1)sku的优惠，满减等信息：pms_sku_info
+            });
+        }
+
+
     }
 
     @Override
