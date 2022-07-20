@@ -4,13 +4,14 @@ spring:
     password: password
     url: jdbc:mysql://localhost:3306/gulimall-wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.125.101:8848
+        server-addr: 127.0.0.1:8848
+
   application:
     name: gulimall-ware
-
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
@@ -19,3 +20,7 @@ mybatis-plus:
       id-type: auto
 server:
   port: 8084
+
+logging:
+  level:
+    com.lg: debug
