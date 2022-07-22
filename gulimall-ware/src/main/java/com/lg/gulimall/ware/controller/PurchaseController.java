@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +26,18 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    /**
+     * 领取采购单
+     *
+     * @param ids
+     * @return
+     */
+    @PostMapping("/received")
+    public R received(@RequestBody List<Long> ids) {
+        //改状态，有关2号采购单的所有信息都要改变
+        purchaseService.received(ids);
+        return R.ok();
+    }
 
     @PostMapping("/merge")
     public R merge(@RequestBody MergeVo mergeVo) {
